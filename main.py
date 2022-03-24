@@ -37,14 +37,6 @@ cycle_time=10 # (seconds)
 steps=8*64
 sleep_time=round(cycle_time*1000000/(steps*len(step_sequence)))
 next_sleep_time=sleep_time
-noise=0
-
-mod=1
-
-pwm=1
-
-sleep_on=round(sleep_time*pwm)
-sleep_off=round(sleep_time* (1-pwm))
 
 start_time=utime.ticks_ms()
 clock_time=0
@@ -75,9 +67,5 @@ while True:
 
     print("Sleep time     : {} uS".format(sleep_time))
     print("Next sleep time: {} uS".format(next_sleep_time))
-
-
-    
-    # last_check=utime.ticks_ms()/
 
             
