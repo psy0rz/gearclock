@@ -3,39 +3,16 @@ import utime
 import random
 
 import machine
-machine.freq(240000000) #only recently discovered it runs on 160Mhz by default.
+#machine.freq(240000000) #only recently discovered it runs on 160Mhz by default.
+machine.freq(160000000) #wemos d1 mini
 
+step_pin=Pin(4, Pin.OUT)
 
-pins = [
-    Pin(13, Pin.OUT),
-    Pin(12, Pin.OUT),
-    Pin(14, Pin.OUT),
-    Pin(27, Pin.OUT),
-]
-
-full_step_sequence = [
-    [1,0,0,1],
-    [1,1,0,0],
-    [0,1,1,0],
-    [0,0,1,1],
-]
-
-half_step_sequence = [
-    [1,0,0,1],
-    [1,0,0,0],
-    [1,1,0,0],
-    [0,1,0,0],
-    [0,1,1,0],
-    [0,0,1,0],
-    [0,0,1,1],
-    [0,0,0,1],
-]
-
-step_sequence=half_step_sequence
 
 cycle_time=10 # (seconds)
-steps=8*64
-sleep_time=round(cycle_time*1000000/(steps*len(step_sequence)))
+steps=(360/1.8)*32
+steps=(360/1.8)*4
+sleep_time=round(cycle_time*1000000/(steps))
 next_sleep_time=sleep_time
 
 start_time=utime.ticks_ms()
@@ -43,10 +20,11 @@ clock_time=0
 
 while True:
     for i in range(0,(steps) +1):
-        for step in step_sequence:
-            for i in range(len(pins)):
-                pins[i].value(step[i])
-            utime.sleep_us(next_sleep_time)
+     step_pin.value(1)
+     step_pin.value(0)
+     utime.sleep_us(next_sleep_time)
+
+
 
     clock_time=clock_time+(cycle_time*1000)
     actual_time=utime.ticks_ms()-start_time
